@@ -24,16 +24,16 @@ cd "$PROJECT_DIR"
 
 # --- 2. 初始化 subsystems ---
 echo "[2/5] 初始化 subsystems..."
-mkdir -p subsystems
-if [ ! -f subsystems/_registry.json ]; then
-    cat > subsystems/_registry.json <<REGEOF
+mkdir -p "$PROJECT_DIR/subsystems"
+if [ ! -f "$PROJECT_DIR/subsystems/_registry.json" ]; then
+    cat > "$PROJECT_DIR/subsystems/_registry.json" <<REGEOF
 {
   "version": "1.0.0",
   "updated_at": "$(date -Iseconds)",
   "subsystems": []
 }
 REGEOF
-    touch subsystems/.gitkeep
+    touch "$PROJECT_DIR/subsystems/.gitkeep"
     echo "  已创建 subsystems/_registry.json"
 else
     echo "  [跳过] _registry.json 已存在"
@@ -41,6 +41,7 @@ fi
 
 # --- 3. 删除 .git 并初始化本地仓库 ---
 echo "[3/5] 初始化本地 Git 仓库..."
+cd "$PROJECT_DIR"
 if [ -d .git ]; then
     rm -rf .git
     echo "  已删除克隆的 .git"
@@ -52,18 +53,18 @@ git commit -m "Initial: company-ops workspace" --allow-empty
 # --- 4. 安装 llm-wiki 到 company-ops/ 下 ---
 echo "[4/5] 安装 llm-wiki skill..."
 GLOBAL_WIKI="$HOME/.claude/skills/llm-wiki"
-LOCAL_WIKI="company-ops/.claude/skills/llm-wiki"
+LOCAL_WIKI="$PROJECT_DIR/company-ops/.claude/skills/llm-wiki"
 
 if [ -d "$LOCAL_WIKI" ]; then
     echo "  [跳过] company-ops 下 llm-wiki 已存在"
 elif [ -d "$GLOBAL_WIKI" ]; then
-    mkdir -p company-ops/.claude/skills
+    mkdir -p "$PROJECT_DIR/company-ops/.claude/skills"
     git clone "$WIKI_REPO" "$LOCAL_WIKI"
     echo "  已克隆 llm-wiki 到 company-ops/.claude/skills/（全局已安装）"
 else
     mkdir -p "$HOME/.claude/skills"
     git clone "$WIKI_REPO" "$GLOBAL_WIKI"
-    mkdir -p company-ops/.claude/skills
+    mkdir -p "$PROJECT_DIR/company-ops/.claude/skills"
     cp -r "$GLOBAL_WIKI" "$LOCAL_WIKI"
     echo "  已安装 llm-wiki（全局 + company-ops 本地副本）"
 fi
