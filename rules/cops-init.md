@@ -65,15 +65,28 @@ git add .
 git commit -m "Initial: company-ops workspace"
 ```
 
-### 7. 安装全局 llm-wiki skill（如果未安装）
+### 7. 安装 llm-wiki skill
 
 ```bash
-# 检查是否已安装
-ls ~/.claude/skills/llm-wiki 2>/dev/null || echo "未安装"
+# 检查全局是否已安装 llm-wiki skill
+GLOBAL_WIKI=~/.claude/skills/llm-wiki
+LOCAL_WIKI=.claude/skills/llm-wiki
 
-# 如果未安装，克隆
-if [ ! -d ~/.claude/skills/llm-wiki ]; then
-    git clone https://github.com/think-next-generation/llm-wiki.git ~/.claude/skills/llm-wiki
+if [ -d "$GLOBAL_WIKI" ]; then
+    # 全局已安装，创建符号链接到本地
+    mkdir -p .claude/skills
+    ln -sfn "$GLOBAL_WIKI" "$LOCAL_WIKI"
+    echo "使用全局 llm-wiki skill"
+elif [ -d "$LOCAL_WIKI" ]; then
+    # 本地已存在
+    echo "本地 llm-wiki skill 已存在"
+else
+    # 克隆到全局
+    git clone https://github.com/think-next-generation/llm-wiki.git "$GLOBAL_WIKI"
+    # 创建符号链接
+    mkdir -p .claude/skills
+    ln -sfn "$GLOBAL_WIKI" "$LOCAL_WIKI"
+    echo "已安装 llm-wiki skill"
 fi
 ```
 

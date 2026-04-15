@@ -37,7 +37,17 @@ company-ops-plugin 是一个 Claude Code 插件，用于管理公司运营系统
 
 ## 安装
 
-### 方式 1：克隆仓库（推荐）
+### 方式 1：使用 Claude Code 插件命令（推荐）
+
+```bash
+# 添加 marketplace
+claude plugin marketplace add https://github.com/think-next-generation/company-ops-plugin.git
+
+# 安装插件
+claude plugin install company-ops
+```
+
+### 方式 2：克隆仓库
 
 ```bash
 # 克隆到插件目录
@@ -47,7 +57,7 @@ git clone https://github.com/think-next-generation/company-ops-plugin.git \
 # 重启 Claude Code 使插件生效
 ```
 
-### 方式 2：手动安装
+### 方式 3：手动安装
 
 ```bash
 # 创建目录
