@@ -1,0 +1,119 @@
+{
+  "name": "company-ops",
+  "description": "Company operations system - Multi-workspace orchestration with cmux.",
+  "version": "1.2.0",
+  "permissions": {
+    "allow": [
+      "Bash(cmux *)",
+      "Bash(claude *)",
+      "Bash(git *)",
+      "Bash(curl *)",
+      "Bash(${config.command})"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "orchestrator",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Orchestrator session ending'"
+          }
+        ]
+      }
+    ]
+  },
+  "commands": [
+    {
+      "name": "cops:init",
+      "description": "初始化 company-ops 完整运行环境：安装 llm-wiki、拉取项目、安装 cops、配置环境",
+      "matchers": ["!cops:init", "!init-cops", "!init"],
+      "parameters": [
+        {
+          "name": "target_dir",
+          "description": "目标目录",
+          "type": "string",
+          "required": false,
+          "default": "."
+        }
+      ]
+    },
+    {
+      "name": "cops:orchestrator",
+      "description": "设置当前工作区为 Orchestrator（公司总调度）",
+      "matchers": ["!cops:orchestrator", "!cops:orch", "!orchestrator"]
+    },
+    {
+      "name": "cops:new-subsystem",
+      "description": "创建新子系统：Phase 1 模板 + Phase 2 交互式完善",
+      "matchers": ["!cops:new-subsystem", "!cops:new", "!new-subsystem"],
+      "parameters": [
+        {
+          "name": "subsystem",
+          "description": "子系统名称",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "type",
+          "description": "类型：function, product, tool",
+          "type": "string",
+          "required": false,
+          "default": "function"
+        }
+      ],
+      "action": {
+        "type": "skill",
+        "skill": "company-ops/.claude/skills/new-subsystem"
+      }
+    },
+    {
+      "name": "cops:list-workspaces",
+      "description": "列出所有工作区",
+      "matchers": ["!cops:list-workspaces", "!cops:ws", "!workspaces"]
+    },
+    {
+      "name": "cops:broadcast",
+      "description": "向所有工作区广播消息",
+      "matchers": ["!cops:broadcast", "!cops:broadcast"],
+      "parameters": [
+        {
+          "name": "message",
+          "description": "消息内容",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "cops:status",
+      "description": "显示 company-ops 系统状态",
+      "matchers": ["!cops:status", "!status"]
+    },
+    {
+      "name": "cops:start-subsystem",
+      "description": "为子系统创建 cmux 工作区",
+      "matchers": ["!cops:start-subsystem", "!cops:start", "!cops:startsub"],
+      "parameters": [
+        {
+          "name": "subsystem",
+          "description": "子系统名称",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "cops:startall",
+      "description": "为所有 subsystem 创建工作区（增量）",
+      "matchers": ["!cops:startall", "!startall"]
+    }
+  ],
+  "config": {
+    "command": "claude",
+    "commandArgs": [],
+    "workspaceRoot": "company-ops",
+    "agentEnv": "COMPANY_OPS_AGENT_COMMAND"
+  }
+}
