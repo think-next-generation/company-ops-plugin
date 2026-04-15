@@ -5,6 +5,25 @@ SUBSYSTEM="${1:?用法: cops-new-subsystem <子系统名称> [type]}"
 SUBSYS_TYPE="${2:-function}"
 DATE="$(date +%Y-%m-%d)"
 
+# 类型描述
+TYPE_DESC="职能部门"
+BASE_DIRS="inbox outbox state data src scripts libs docs workspace"
+
+case "$SUBSYS_TYPE" in
+    product)
+        TYPE_DESC="产品线"
+        BASE_DIRS="inbox outbox state src tests data docs scripts libs workspace"
+        ;;
+    tool)
+        TYPE_DESC="工具系统"
+        BASE_DIRS="inbox outbox state src bin config data scripts libs docs"
+        ;;
+    function|*)
+        TYPE_DESC="职能部门"
+        BASE_DIRS="inbox outbox state data src scripts libs docs workspace"
+        ;;
+esac
+
 # 定位 subsystems 目录
 SUBSYSTEMS_DIR=""
 if [ -d "subsystems" ]; then
@@ -24,13 +43,14 @@ if [ -d "$SUBSYS_DIR" ]; then
     exit 1
 fi
 
-echo "=== 创建子系统: $SUBSYSTEM ==="
+echo "=== 创建子系统: $SUBSYSTEM (类型: $SUBSYS_TYPE / $TYPE_DESC) ==="
 
 # --- 1. 创建目录结构 ---
-mkdir -p "$SUBSYS_DIR"/{inbox,outbox,state,data,src,scripts,libs,docs,workspace}
+mkdir -p "$SUBSYS_DIR"/{inbox,outbox,state}
 
-# 添加 .gitkeep
-for d in inbox outbox data src scripts libs docs workspace; do
+# 创建类型特定的目录
+for d in $BASE_DIRS; do
+    mkdir -p "$SUBSYS_DIR/$d"
     touch "$SUBSYS_DIR/$d/.gitkeep"
 done
 
@@ -42,7 +62,7 @@ cat > "$SUBSYS_DIR/CLAUDE.md" <<EOF
 
 ## 身份
 
-你是 $SUBSYSTEM 子系统 Agent，负责${SUBSYS_TYPE}相关事务。你的工作目录是 \`subsystems/$SUBSYSTEM/\`。
+你是 $SUBSYSTEM 子系统 Agent，负责${TYPE_DESC}相关事务。你的工作目录是 \`subsystems/$SUBSYSTEM/\`。
 
 ## 文件边界约束
 
@@ -145,13 +165,13 @@ cat > "$SUBSYS_DIR/SPEC.md" <<EOF
 |------|-----|
 | 子系统ID | \`$SUBSYSTEM\` |
 | 名称 | $SUBSYSTEM |
-| 类型 | $SUBSYS_TYPE (${SUBSYS_TYPE}部门) |
+| 类型 | $SUBSYS_TYPE ($TYPE_DESC) |
 | 创建日期 | $DATE |
 | 状态 | initializing |
 
 ## 概述
 
-${SUBSYS_TYPE}部门子系统，负责...
+${TYPE_DESC}子系统，负责...
 
 ## 职责范围
 
