@@ -46,9 +46,6 @@ if [ -d .git ]; then
     rm -rf .git
     echo "  已删除克隆的 .git"
 fi
-git init
-git add .
-git commit -m "Initial: company-ops workspace" --allow-empty
 
 # --- 4. 安装 llm-wiki 到 company-ops/ 下 ---
 echo "[4/5] 安装 llm-wiki skill..."

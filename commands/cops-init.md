@@ -51,9 +51,6 @@ if [ -d .git ]; then
     rm -rf .git
     echo "  Removed cloned .git"
 fi
-git init
-git add .
-git commit -m "Initial: company-ops workspace" --allow-empty
 
 echo "[4/5] Installing llm-wiki skill..."
 GLOBAL_WIKI="$HOME/.claude/skills/llm-wiki"
