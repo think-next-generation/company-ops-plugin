@@ -1,6 +1,6 @@
 {
   "id": "company-ops",
-  "name": "Company Ops",
+  "name": "company-ops",
   "description": "Multi-workspace orchestration system for company operations with cmux integration",
   "category": "productivity",
   "price": "free",
