@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 验证在正确目录
+if [ ! -f "CLAUDE.md" ] && [ ! -f "../subsystems/_registry.json" ]; then
+    echo "错误: 请在 company-ops/ 目录下执行此命令"
+    exit 1
+fi
+
+echo "=== cops:orchestrator 初始化 ==="
+
+# 设置环境变量
+export WORKSPACE_TYPE=orchestrator
+export WORKSPACE_ROOT="$(pwd)"
+
+# 初始化 .system 目录
+mkdir -p .system
+
+if [ ! -f .system/workspaces.json ]; then
+    cat > .system/workspaces.json <<EOF
+{
+  "version": "1.0.0",
+  "updated_at": "$(date -Iseconds)",
+  "workspaces": [
+    {
+      "id": "orchestrator",
+      "name": "Orchestrator",
+      "subsystem": null,
+      "path": "company-ops",
+      "status": "running",
+      "agent": "orchestrator-agent"
+    }
+  ]
+}
+EOF
+    echo "  已创建 .system/workspaces.json"
+else
+    echo "  [跳过] workspaces.json 已存在"
+fi
+
+# 输出子系统信息
+echo ""
+echo "=== Orchestrator 已就绪 ==="
+
+if [ -f "../subsystems/_registry.json" ]; then
+    SUBSYS_COUNT=$(python3 -c "import json; print(len(json.load(open('../subsystems/_registry.json')).get('subsystems', [])))" 2>/dev/null || echo "0")
+    echo "  已注册子系统: $SUBSYS_COUNT 个"
+else
+    echo "  已注册子系统: 0 个（未初始化）"
+fi
+
+echo ""
+echo "可用命令:"
+echo "  /cops-new-subsystem <名称>   创建子系统"
+echo "  /cops-start-subsystem <名称> 启动子系统"
+echo "  /cops-status                 查看状态"
