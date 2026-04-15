@@ -22,7 +22,26 @@ fi
 cd ai_run_company_with_docs
 ```
 
-### 3. 删除 .git 目录（关键步骤）
+### 3. 初始化 subsystems 目录
+
+```bash
+# 创建 subsystems 目录（如果不存在）
+mkdir -p subsystems
+
+# 创建空的 _registry.json
+cat > subsystems/_registry.json << 'EOF'
+{
+  "version": "1.0.0",
+  "updated_at": "$(date -Iseconds)",
+  "subsystems": []
+}
+EOF
+
+# 创建 .gitkeep（保持目录）
+touch subsystems/.gitkeep
+```
+
+### 5. 删除 .git 目录（关键步骤）
 
 ```bash
 # 删除克隆的 git 仓库，使其成为本地工作目录
@@ -32,7 +51,7 @@ rm -rf .git
 ls -la .git 2>/dev/null || echo ".git 已删除"
 ```
 
-### 4. 初始化为本地 Git 仓库
+### 6. 初始化为本地 Git 仓库
 
 ```bash
 # 初始化新的本地 Git 仓库
@@ -46,7 +65,7 @@ git add .
 git commit -m "Initial: company-ops workspace"
 ```
 
-### 5. 安装全局 llm-wiki skill（如果未安装）
+### 7. 安装全局 llm-wiki skill（如果未安装）
 
 ```bash
 # 检查是否已安装
@@ -58,7 +77,7 @@ if [ ! -d ~/.claude/skills/llm-wiki ]; then
 fi
 ```
 
-### 6. 安装 cops 工具（如果需要）
+### 8. 安装 cops 工具（如果需要）
 
 ```bash
 # 检查是否已安装
@@ -88,7 +107,7 @@ if ! which cops >/dev/null 2>&1; then
 fi
 ```
 
-### 7. 测试安装
+### 9. 测试安装
 
 ```bash
 cops --version
