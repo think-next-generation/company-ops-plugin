@@ -73,20 +73,20 @@ GLOBAL_WIKI=~/.claude/skills/llm-wiki
 LOCAL_WIKI=.claude/skills/llm-wiki
 
 if [ -d "$GLOBAL_WIKI" ]; then
-    # 全局已安装，创建符号链接到本地
+    # 全局已安装，克隆到本地使用
     mkdir -p .claude/skills
-    ln -sfn "$GLOBAL_WIKI" "$LOCAL_WIKI"
-    echo "使用全局 llm-wiki skill"
+    git clone https://github.com/think-next-generation/llm-wiki.git "$LOCAL_WIKI"
+    echo "已克隆 llm-wiki 到本地（使用全局版本存在）"
 elif [ -d "$LOCAL_WIKI" ]; then
     # 本地已存在
     echo "本地 llm-wiki skill 已存在"
 else
-    # 克隆到全局
+    # 全局没有安装，克隆到全局
     git clone https://github.com/think-next-generation/llm-wiki.git "$GLOBAL_WIKI"
-    # 创建符号链接
+    # 克隆到本地
     mkdir -p .claude/skills
-    ln -sfn "$GLOBAL_WIKI" "$LOCAL_WIKI"
-    echo "已安装 llm-wiki skill"
+    cp -r "$GLOBAL_WIKI" "$LOCAL_WIKI"
+    echo "已安装 llm-wiki skill（全局 + 本地副本）"
 fi
 ```
 
