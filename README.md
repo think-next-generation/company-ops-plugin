@@ -24,16 +24,16 @@ company-ops-plugin 是一个 Claude Code 插件，用于管理公司运营系统
 
 ## 功能列表
 
-| 命令 | 说明 | Matchers |
-|------|------|---------|
-| `!cops:init` | 初始化运行环境 | `!cops:init`, `!init-cops`, `!init` |
-| `!cops:orchestrator` | 设置为 Orchestrator 总调度 | `!cops:orchestrator`, `!cops:orch` |
-| `!cops:new-subsystem` | 创建新子系统 | `!cops:new-subsystem`, `!cops:new` |
-| `!cops:list-workspaces` | 列出所有工作区 | `!cops:list-workspaces`, `!cops:ws` |
-| `!cops:broadcast` | 向所有工作区广播消息 | `!cops:broadcast` |
-| `!cops:status` | 显示系统状态 | `!cops:status` |
-| `!cops:start-subsystem` | 启动子系统工作区 | `!cops:start-subsystem`, `!cops:start` |
-| `!cops:startall` | 启动所有子系统 | `!cops:startall` |
+| 命令 | 说明 |
+|------|------|
+| `/company-ops:cops-init` | 初始化运行环境 |
+| `/company-ops:cops-orchestrator` | 设置为 Orchestrator 总调度 |
+| `/company-ops:cops-new-subsystem` | 创建新子系统 |
+| `/company-ops:cops-list-workspaces` | 列出所有工作区 |
+| `/company-ops:cops-broadcast` | 向所有工作区广播消息 |
+| `/company-ops:cops-status` | 显示系统状态 |
+| `/company-ops:cops-start-subsystem` | 启动子系统工作区 |
+| `/company-ops:cops-startall` | 启动所有子系统 |
 
 ## 安装
 
@@ -145,32 +145,32 @@ subsystems/<name>/
 cd ai_run_company_with_docs/company-ops
 
 # 初始化
-!cops:init
+/company-ops:cops-init
 ```
 
 ### 步骤 2：设置为总调度
 
 ```bash
 # 设置为 Orchestrator
-!cops:orchestrator
+/company-ops:cops-orchestrator
 ```
 
 ### 步骤 3：启动子系统
 
 ```bash
 # 单个启动
-!cops:start-subsystem 财务
-!cops:start-subsystem 法务
+/company-ops:cops-start-subsystem 财务
+/company-ops:cops-start-subsystem 法务
 
 # 或一次性启动所有
-!cops:startall
+/company-ops:cops-startall
 ```
 
 ### 步骤 4：查看状态
 
 ```bash
-!cops:status
-!cops:list-workspaces
+/company-ops:cops-status
+/company-ops:cops-list-workspaces
 ```
 
 ## 命令详解
@@ -190,9 +190,9 @@ cd ai_run_company_with_docs/company-ops
 - **Phase 2**：交互式问答完善规范
 
 ```bash
-!cops:new-subsystem 财务 --type=function
-!cops:new-subsystem 产品研发 --type=product
-!cops:new-subsystem 任务系统 --type=tool
+/company-ops:cops-new-subsystem 财务 --type=function
+/company-ops:cops-new-subsystem 产品研发 --type=product
+/company-ops:cops-new-subsystem 任务系统 --type=tool
 ```
 
 ### cops:start-subsystem
@@ -205,10 +205,7 @@ cd ai_run_company_with_docs/company-ops
 5. 更新工作区清单
 
 ```bash
-!cops:start-subsystem 财务
-# 或简写
-!cops:start 财务
-!cops:startsub 财务
+/company-ops:cops-start-subsystem 财务
 ```
 
 ### cops:broadcast
@@ -216,7 +213,7 @@ cd ai_run_company_with_docs/company-ops
 向所有工作区广播消息：
 
 ```bash
-!cops:broadcast "系统将于今晚 10 点进行维护"
+/company-ops:cops-broadcast "系统将于今晚 10 点进行维护"
 ```
 
 ## 数据流

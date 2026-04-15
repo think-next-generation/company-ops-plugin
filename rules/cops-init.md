@@ -141,7 +141,7 @@ cops status
 下一步：
 1. 重新打开 cmux 终端
 2. cd ai_run_company_with_docs/company-ops
-3. 运行 !cops:orchestrator 设置为总调度
+3. 运行 /company-ops:cops-orchestrator 设置为总调度
 
 取消 cmux 通知重排序：
   cmux 配置 → 通知 → 取消勾选"收到通知时重新排序"

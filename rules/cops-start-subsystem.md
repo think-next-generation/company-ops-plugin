@@ -96,7 +96,7 @@ cmux send -t 财务 "${AGENT_CMD} -d ai_run_company_with_docs/subsystems/财务"
 cmux send -t 财务 "You are now the 财务 subsystem agent. Your workspace is subsystems/财务/"
 
 # 验证启动成功
-cmux send -t 财务 "!status"
+cmux send -t 财务 "/company-ops:cops-status"
 ```
 
 ---
@@ -116,7 +116,7 @@ jq '.subsystems[] | select(.status=="active")' subsystems/_registry.json
 
 # 3. 增量创建（跳过已存在的）
 for subsystem in $(jq -r '.subsystems[].id' subsystems/_registry.json); do
-    !cops:start-subsystem $subsystem
+    /company-ops:cops-start-subsystem $subsystem
 done
 ```
 

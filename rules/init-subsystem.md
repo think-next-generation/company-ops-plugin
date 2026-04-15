@@ -33,7 +33,7 @@ Check the following files for context:
 
 ## Commands
 
-- Run `!status` to check subsystem status
+- Run `/company-ops:cops-status` to check subsystem status
 - Write to `outbox/orchestrator/` to communicate with orchestrator
 - Read from `inbox/` for incoming tasks
 

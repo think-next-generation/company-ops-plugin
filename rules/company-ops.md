@@ -56,22 +56,22 @@ This plugin provides multi-workspace orchestration for company-ops using cmux.
 
 | Command | Description |
 |---------|-------------|
-| `!Orchestrator` | Initialize current workspace as orchestrator |
-| `!new-subsystem <name>` | Create new subsystem workspace |
-| `!workspaces` | List all workspaces |
-| `!broadcast <message>` | Send message to all workspaces |
-| `!status` | Show system status |
+| `/company-ops:cops-orchestrator` | Initialize current workspace as orchestrator |
+| `/company-ops:cops-new-subsystem <name>` | Create new subsystem workspace |
+| `/company-ops:cops-list-workspaces` | List all workspaces |
+| `/company-ops:cops-broadcast <message>` | Send message to all workspaces |
+| `/company-ops:cops-status` | Show system status |
 
 ### Subsystem Commands
 
 | Command | Description |
 |---------|-------------|
 | `!report <message>` | Send report to orchestrator |
-| `!status` | Show local subsystem status |
+| `/company-ops:cops-status` | Show local subsystem status |
 
 ## Creating a New Subsystem Workspace
 
-When `!new-subsystem <name>` is executed in orchestrator:
+When `/company-ops:cops-new-subsystem <name>` is executed in orchestrator:
 
 1. **Create workspace in cmux**:
    ```bash
