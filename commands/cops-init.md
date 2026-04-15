@@ -46,7 +46,6 @@ else
 fi
 
 echo "[3/5] Initializing local Git repo..."
-cd "$PROJECT_DIR"
 if [ -d .git ]; then
     rm -rf .git
     echo "  Removed cloned .git"

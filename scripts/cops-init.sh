@@ -41,7 +41,6 @@ fi
 
 # --- 3. 删除 .git 并初始化本地仓库 ---
 echo "[3/5] 初始化本地 Git 仓库..."
-cd "$PROJECT_DIR"
 if [ -d .git ]; then
     rm -rf .git
     echo "  已删除克隆的 .git"
