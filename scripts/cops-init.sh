@@ -49,23 +49,23 @@ git init
 git add .
 git commit -m "Initial: company-ops workspace" --allow-empty
 
-# --- 4. 安装 llm-wiki ---
+# --- 4. 安装 llm-wiki 到 company-ops/ 下 ---
 echo "[4/5] 安装 llm-wiki skill..."
 GLOBAL_WIKI="$HOME/.claude/skills/llm-wiki"
-LOCAL_WIKI=".claude/skills/llm-wiki"
+LOCAL_WIKI="company-ops/.claude/skills/llm-wiki"
 
 if [ -d "$LOCAL_WIKI" ]; then
-    echo "  [跳过] 本地 llm-wiki 已存在"
+    echo "  [跳过] company-ops 下 llm-wiki 已存在"
 elif [ -d "$GLOBAL_WIKI" ]; then
-    mkdir -p .claude/skills
+    mkdir -p company-ops/.claude/skills
     git clone "$WIKI_REPO" "$LOCAL_WIKI"
-    echo "  已克隆 llm-wiki 到本地（全局已安装）"
+    echo "  已克隆 llm-wiki 到 company-ops/.claude/skills/（全局已安装）"
 else
     mkdir -p "$HOME/.claude/skills"
     git clone "$WIKI_REPO" "$GLOBAL_WIKI"
-    mkdir -p .claude/skills
+    mkdir -p company-ops/.claude/skills
     cp -r "$GLOBAL_WIKI" "$LOCAL_WIKI"
-    echo "  已安装 llm-wiki（全局 + 本地副本）"
+    echo "  已安装 llm-wiki（全局 + company-ops 本地副本）"
 fi
 
 # --- 5. 输出结果 ---
