@@ -1,0 +1,19 @@
+{
+  "name": "company-ops",
+  "version": "0.1.0",
+  "description": "Multi-workspace orchestration system for company operations with cmux integration",
+  "author": {
+    "name": "Think Next Generation",
+    "email": "think-next@qq.com"
+  },
+  "repository": "https://github.com/think-next-generation/company-ops-plugin.git",
+  "license": "MIT",
+  "keywords": [
+    "cmux",
+    "orchestration",
+    "multi-agent",
+    "company-ops"
+  ],
+  "commands": "./commands/",
+  "rules": "./rules/"
+}
