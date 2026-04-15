@@ -14,5 +14,6 @@
     "multi-agent",
     "company-ops"
   ],
-  "commands": "./commands/"
+  "commands": "./commands/",
+  "skills": "./skills/"
 }
