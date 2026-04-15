@@ -1,14 +1,28 @@
 {
-  "id": "company-ops",
   "name": "company-ops",
   "description": "Multi-workspace orchestration system for company operations with cmux integration",
-  "category": "productivity",
-  "price": "free",
-  "tags": ["cmux", "orchestration", "multi-agent", "company-ops"],
-  "author": {
+  "owner": {
     "name": "Think Next Generation",
-    "contact": "think-next@qq.com"
+    "email": "think-next@qq.com"
   },
-  "repository": "https://github.com/think-next-generation/company-ops-plugin.git",
-  "minCmuxVersion": "0.60.0"
+  "metadata": {
+    "description": "Multi-workspace orchestration system for company operations with cmux integration",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "company-ops",
+      "source": "./",
+      "description": "Multi-workspace orchestration system for company operations with cmux integration",
+      "version": "0.1.0",
+      "author": {
+        "name": "Think Next Generation",
+        "email": "think-next@qq.com"
+      },
+      "repository": "https://github.com/think-next-generation/company-ops-plugin.git",
+      "keywords": ["cmux", "orchestration", "multi-agent", "company-ops"],
+      "category": "productivity",
+      "strict": false
+    }
+  ]
 }
