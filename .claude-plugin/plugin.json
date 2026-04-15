@@ -14,6 +14,5 @@
     "multi-agent",
     "company-ops"
   ],
-  "commands": "./commands/",
-  "rules": "./rules/"
+  "commands": "./commands/"
 }
