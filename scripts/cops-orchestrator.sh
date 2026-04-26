@@ -13,11 +13,9 @@ echo "=== cops:orchestrator 初始化 ==="
 export WORKSPACE_TYPE=orchestrator
 export WORKSPACE_ROOT="$(pwd)"
 
-# 初始化 .system 目录
-mkdir -p .system
-
-if [ ! -f .system/workspaces.json ]; then
-    cat > .system/workspaces.json <<EOF
+# 更新 .system/workspaces.json
+if [ -f .system/workspaces.json ]; then
+    cat > .system/workspaces.json << 'EOF'
 {
   "version": "1.0.0",
   "updated_at": "$(date -Iseconds)",
@@ -27,15 +25,14 @@ if [ ! -f .system/workspaces.json ]; then
       "name": "Orchestrator",
       "subsystem": null,
       "path": "company-ops",
+      "cmux_id": null,
       "status": "running",
       "agent": "orchestrator-agent"
     }
   ]
 }
 EOF
-    echo "  已创建 .system/workspaces.json"
-else
-    echo "  [跳过] workspaces.json 已存在"
+    echo "  已更新 .system/workspaces.json"
 fi
 
 # Tag current cmux workspace as orchestrator
