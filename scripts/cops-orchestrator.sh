@@ -38,6 +38,20 @@ else
     echo "  [跳过] workspaces.json 已存在"
 fi
 
+# Tag current cmux workspace as orchestrator
+if command -v cmux &>/dev/null; then
+    CURRENT_WS=$(cmux current-workspace 2>/dev/null || true)
+    if [ -n "$CURRENT_WS" ]; then
+        cmux rename-workspace --workspace "$CURRENT_WS" "⬡ orchestrator" 2>/dev/null && \
+            echo "  已标记 cmux workspace: ⬡ orchestrator ($CURRENT_WS)" || true
+    fi
+fi
+
+# Sync cmux IDs into workspaces.json
+if [ -f "scripts/sync-cmux-ids.py" ]; then
+    python3 scripts/sync-cmux-ids.py 2>/dev/null || true
+fi
+
 # 输出子系统信息
 echo ""
 echo "=== Orchestrator 已就绪 ==="

@@ -31,7 +31,15 @@ model: sonnet
 SUBSYS_PATH="$(pwd)/../subsystems/$SUBSYSTEM"
 
 # 使用 cmux 创建新工作区
-cmux new-window -n "$SUBSYSTEM" -d "cd '$SUBSYS_PATH'"
+cmux new-workspace --name "⬡ $SUBSYSTEM" --command "cd '$SUBSYS_PATH'"
+```
+
+### 4. 更新cmux IDs 到 workspaces.json
+```bash
+# Sync cmux IDs into workspaces.json
+if [ -f "scripts/sync-cmux-ids.py" ]; then
+    python3 scripts/sync-cmux-ids.py 2>/dev/null || true
+fi
 ```
 
 ### 4. 启动 Agent

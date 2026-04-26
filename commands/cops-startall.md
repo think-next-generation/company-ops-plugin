@@ -23,7 +23,7 @@ model: sonnet
 对每个活跃子系统：
 
 1. **检查是否已启动**：如果已在 workspaces.json 中且 status 为 running，跳过
-2. **检查 cmux 工作区是否存在**：`cmux list-windows` 检查是否已有同名窗口
+2. **检查 cmux 工作区是否存在**：`cmux list-workspaces` 检查是否已有同名窗口
 3. **如果需要创建**：按照 `/cops-start-subsystem` 的流程执行
    - 创建 cmux 工作区
    - 启动 Agent
