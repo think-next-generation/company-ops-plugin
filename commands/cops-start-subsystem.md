@@ -40,36 +40,9 @@ SUBSYS_PATH="$(pwd)/../subsystems/$SUBSYSTEM"
 cmux new-workspace --name "⬡ $SUBSYSTEM" --command "cd '$SUBSYS_PATH'"
 ```
 
-### 4. 更新cmux IDs 到 workspaces.json
-```bash
-# Sync cmux IDs into workspaces.json
-if [ -f "scripts/sync-cmux-ids.py" ]; then
-    python3 scripts/sync-cmux-ids.py 2>/dev/null || true
-fi
-```
+### 4. 追加 workspaces.json 条目
 
-### 4. 启动 Agent
-
-```bash
-AGENT_CMD="${COMPANY_OPS_AGENT_COMMAND:-claude}"
-cmux send -t "$SUBSYSTEM" "$AGENT_CMD" Enter
-```
-
-等待几秒让 Agent 启动。
-
-### 5. 通过 cmux surface 发送初始化指令
-
-直接通过 cmux 向子系统 surface 发送初始化消息：
-
-```bash
-cmux send -t "$SUBSYSTEM" "You are now the $SUBSYSTEM subsystem agent. Your workspace is subsystems/$SUBSYSTEM/" Enter
-```
-
-读取 `rules/init-subsystem.md` 中的初始化模板，替换 `{SUBSYSTEM_ID}` 和 `{WORKSPACE_PATH}` 变量后发送。
-
-### 6. 更新 workspaces.json
-
-将新工作区信息追加到 `.system/workspaces.json`：
+将新工作区信息追加到 `.system/workspaces.json`（sync 需要该条目已存在才能匹配 cmux workspace）：
 
 ```python
 import json
@@ -88,6 +61,34 @@ with open('.system/workspaces.json', 'w') as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 ```
 
-### 7. 确认启动
+### 5. 同步 cmux IDs 到 workspaces.json
+
+```bash
+# Sync cmux IDs into workspaces.json
+if [ -f "scripts/sync-cmux-ids.py" ]; then
+    python3 scripts/sync-cmux-ids.py 2>/dev/null || true
+fi
+```
+
+### 6. 启动 Agent
+
+```bash
+AGENT_CMD="${COMPANY_OPS_AGENT_COMMAND:-claude}"
+cmux send -t "$SUBSYSTEM" "$AGENT_CMD" Enter
+```
+
+等待几秒让 Agent 启动。
+
+### 7. 通过 cmux surface 发送初始化指令
+
+直接通过 cmux 向子系统 surface 发送初始化消息：
+
+```bash
+cmux send -t "$SUBSYSTEM" "You are now the $SUBSYSTEM subsystem agent. Your workspace is subsystems/$SUBSYSTEM/" Enter
+```
+
+读取 `rules/init-subsystem.md` 中的初始化模板，替换 `{SUBSYSTEM_ID}` 和 `{WORKSPACE_PATH}` 变量后发送。
+
+### 8. 确认启动
 
 告知用户子系统已启动，列出当前所有活跃工作区。
