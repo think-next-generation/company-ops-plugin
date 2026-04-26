@@ -51,7 +51,28 @@ if [ -d .git ]; then
     echo "  Removed cloned .git"
 fi
 
-echo "[4/5] Installing llm-wiki skill..."
+echo "[4/5] Installing cops CLI..."
+if [[ "$(uname)" != "Darwin" ]]; then
+    echo "  [skip] cops only supports macOS (darwin-arm64)"
+elif [[ "$(uname -m)" != "arm64" ]]; then
+    echo "  [skip] cops only supports arm64 (Apple Silicon)"
+else
+    COPS_VERSION=$(curl -s https://api.github.com/repos/think-next-generation/cops/releases/latest | grep -o '"tag_name": "v[^"]*"' | cut -d'"' -f4 | sed 's/v//')
+    if [ -z "$COPS_VERSION" ]; then
+        echo "  [skip] Could not fetch latest cops version"
+    else
+        COPS_URL="https://github.com/think-next-generation/cops/releases/download/v${COPS_VERSION}/cops-${COPS_VERSION}-darwin-arm64.tar.gz"
+        COPS_TMP=$(mktemp -d)
+        echo "  Downloading cops v${COPS_VERSION}..."
+        curl -sL "$COPS_URL" -o "$COPS_TMP/cops.tar.gz"
+        tar -xzf "$COPS_TMP/cops.tar.gz" -C "$COPS_TMP"
+        "$COPS_TMP/cops-*/install.sh"
+        rm -rf "$COPS_TMP"
+        echo "  Installed cops v${COPS_VERSION}"
+    fi
+fi
+
+echo "[5/5] Installing llm-wiki skill..."
 GLOBAL_WIKI="$HOME/.claude/skills/llm-wiki"
 LOCAL_WIKI="$PROJECT_DIR/company-ops/.claude/skills/llm-wiki"
 
