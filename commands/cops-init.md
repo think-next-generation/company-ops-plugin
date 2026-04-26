@@ -90,6 +90,14 @@ else
     echo "  Installed llm-wiki (global + company-ops local copy)"
 fi
 
+echo "[6/6] Checking cc-connect..."
+if command -v cc-connect &> /dev/null; then
+    echo "  cc-connect is installed: $(cc-connect --version 2>/dev/null || cc-connect --help 2>&1 | head -1)"
+else
+    echo "  cc-connect not found. Install from:"
+    echo "    https://raw.githubusercontent.com/chenhg5/cc-connect/refs/heads/main/INSTALL.md"
+fi
+
 echo ""
 echo "========================================"
 echo "  Initialization complete!"
