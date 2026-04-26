@@ -64,27 +64,6 @@ else
 fi
 
 echo ""
-echo "=== Resetting workspaces.json ==="
-mkdir -p .system
-cat > .system/workspaces.json << 'EOF'
-{
-  "version": "1.0.0",
-  "updated_at": "",
-  "workspaces": [
-    {
-      "id": "orchestrator",
-      "name": "Orchestrator",
-      "subsystem": null,
-      "path": "company-ops",
-      "cmux_id": null,
-      "status": "pending"
-    }
-  ]
-}
-EOF
-echo "  Reset workspaces.json (orchestrator only)"
-
-echo ""
 echo "=== Starting Orchestrator ==="
 bash "${CLAUDE_PLUGIN_ROOT}/scripts/cops-orchestrator.sh"
 ```
