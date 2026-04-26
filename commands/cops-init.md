@@ -57,7 +57,7 @@ if [[ "$(uname)" != "Darwin" ]]; then
 elif [[ "$(uname -m)" != "arm64" ]]; then
     echo "  [skip] cops only supports arm64 (Apple Silicon)"
 else
-    COPS_VERSION=$(curl -s https://api.github.com/repos/think-next-generation/cops/releases/latest | grep -o '"tag_name": "v[^"]*"' | cut -d'"' -f4 | sed 's/v//')
+    COPS_VERSION=$(curl -s https://api.github.com/repos/think-next-generation/cops/releases/latest | grep -o '"tag_name": "[^"]*"' | cut -d'"' -f4)
     if [ -z "$COPS_VERSION" ]; then
         echo "  [skip] Could not fetch latest cops version"
     else
