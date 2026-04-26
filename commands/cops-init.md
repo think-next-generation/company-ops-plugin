@@ -23,13 +23,13 @@ PROJECT_DIR="$TARGET/$PROJECT"
 if [ -d "$PROJECT_DIR" ]; then
     echo "[skip] $PROJECT_DIR already exists"
 else
-    echo "[1/5] Cloning project..."
+    echo "[1/6] Cloning project..."
     git clone "$REPO" "$PROJECT_DIR"
 fi
 
 cd "$PROJECT_DIR"
 
-echo "[2/5] Initializing subsystems..."
+echo "[2/6] Initializing subsystems..."
 mkdir -p "$PROJECT_DIR/subsystems"
 if [ ! -f "$PROJECT_DIR/subsystems/_registry.json" ]; then
     cat > "$PROJECT_DIR/subsystems/_registry.json" <<REGEOF
@@ -45,13 +45,13 @@ else
     echo "  [skip] _registry.json exists"
 fi
 
-echo "[3/5] Initializing local Git repo..."
+echo "[3/6] Initializing local Git repo..."
 if [ -d .git ]; then
     rm -rf .git
     echo "  Removed cloned .git"
 fi
 
-echo "[4/5] Installing cops CLI..."
+echo "[4/6] Installing cops CLI..."
 if [[ "$(uname)" != "Darwin" ]]; then
     echo "  [skip] cops only supports macOS (darwin-arm64)"
 elif [[ "$(uname -m)" != "arm64" ]]; then
@@ -72,7 +72,7 @@ else
     fi
 fi
 
-echo "[5/5] Installing llm-wiki skill..."
+echo "[5/6] Installing llm-wiki skill..."
 GLOBAL_WIKI="$HOME/.claude/skills/llm-wiki"
 LOCAL_WIKI="$PROJECT_DIR/company-ops/.claude/skills/llm-wiki"
 
@@ -94,8 +94,7 @@ echo "[6/6] Checking cc-connect..."
 if command -v cc-connect &> /dev/null; then
     echo "  cc-connect is installed: $(cc-connect --version 2>/dev/null || cc-connect --help 2>&1 | head -1)"
 else
-    echo "  cc-connect not found. Install from:"
-    echo "    https://raw.githubusercontent.com/chenhg5/cc-connect/refs/heads/main/INSTALL.md"
+    echo "  cc-connect not found. Follow https://raw.githubusercontent.com/chenhg5/cc-connect/refs/heads/main/INSTALL.md to install and configure cc-connect."
 fi
 
 echo ""
