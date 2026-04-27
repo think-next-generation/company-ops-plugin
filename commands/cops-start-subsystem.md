@@ -72,19 +72,30 @@ fi
 
 ### 6. 启动 Agent
 
+从 workspaces.json 读取该子系统的 workspace_id 和 surface_id，然后发送命令：
+
 ```bash
+# 从 workspaces.json 读取 workspace_id 和 surface_id
+WORKSPACE_ID=$(python3 -c "import json; ws=json.load(open('.system/workspaces.json')); print(next(w['cmux']['workspace_id'] for w in ws['workspaces'] if w['id']=='$SUBSYSTEM'))")
+SURFACE_ID=$(python3 -c "import json; ws=json.load(open('.system/workspaces.json')); print(next(w['cmux']['surface_id'] for w in ws['workspaces'] if w['id']=='$SUBSYSTEM'))")
+
 AGENT_CMD="${COMPANY_OPS_AGENT_COMMAND:-claude}"
-cmux send -t "$SUBSYSTEM" "$AGENT_CMD" Enter
+cmux send --workspace "$WORKSPACE_ID" --surface "$SURFACE_ID" "$AGENT_CMD"
+cmux send-key --workspace "$WORKSPACE_ID" --surface "$SURFACE_ID" enter
 ```
 
 等待几秒让 Agent 启动。
 
 ### 7. 通过 cmux surface 发送初始化指令
 
-直接通过 cmux 向子系统 surface 发送初始化消息：
-
 ```bash
-cmux send -t "$SUBSYSTEM" "You are now the $SUBSYSTEM subsystem agent. Your workspace is subsystems/$SUBSYSTEM/" Enter
+# 读取 workspace_id 和 surface_id
+WORKSPACE_ID=$(python3 -c "import json; ws=json.load(open('.system/workspaces.json')); print(next(w['cmux']['workspace_id'] for w in ws['workspaces'] if w['id']=='$SUBSYSTEM'))")
+SURFACE_ID=$(python3 -c "import json; ws=json.load(open('.system/workspaces.json')); print(next(w['cmux']['surface_id'] for w in ws['workspaces'] if w['id']=='$SUBSYSTEM'))")
+
+# 发送初始化消息
+cmux send --workspace "$WORKSPACE_ID" --surface "$SURFACE_ID" "You are now the $SUBSYSTEM subsystem agent. Your workspace is subsystems/$SUBSYSTEM/"
+cmux send-key --workspace "$WORKSPACE_ID" --surface "$SURFACE_ID" enter
 ```
 
 读取 `rules/init-subsystem.md` 中的初始化模板，替换 `{SUBSYSTEM_ID}` 和 `{WORKSPACE_PATH}` 变量后发送。

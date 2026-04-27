@@ -2,49 +2,63 @@
 set -euo pipefail
 
 MESSAGE="${1:?用法: cops-broadcast <消息内容>}"
+WS_FILE=".system/workspaces.json"
 
 echo "=== 广播消息 ==="
 
-# 检查 tmux/cmux
-TMUX_CMD=""
-if command -v cmux &>/dev/null; then
-    TMUX_CMD="cmux"
-elif command -v tmux &>/dev/null; then
-    TMUX_CMD="tmux"
-else
-    echo "错误: 未找到 cmux 或 tmux"
+# 检查 cmux
+if ! command -v cmux &>/dev/null; then
+    echo "错误: 未找到 cmux"
     exit 1
 fi
 
-# 读取工作区列表
-WS_FILE=""
-for f in ".system/workspaces.json" "../.system/workspaces.json"; do
-    if [ -f "$f" ]; then
-        WS_FILE="$f"
-        break
-    fi
-done
-
-if [ -z "$WS_FILE" ]; then
+if [ ! -f "$WS_FILE" ]; then
     echo "错误: workspaces.json 不存在"
     exit 1
 fi
 
 SENT=0
-WORKSPACES=$(python3 -c "
+# 读取所有非 orchestrator 的运行中工作区及其 surface_id
+python3 << PYEOF
 import json
 with open('$WS_FILE') as f:
     data = json.load(f)
 for w in data.get('workspaces', []):
     if w.get('status') == 'running' and w['id'] != 'orchestrator':
-        print(w['id'])
+        cmux_info = w.get('cmux', {})
+        if cmux_info:
+            ws_id = cmux_info.get('workspace_id', '')
+            surf_id = cmux_info.get('surface_id', '')
+            if ws_id and surf_id:
+                print(f"{w['id']}|{ws_id}|{surf_id}")
+PYEOF
+
+WORKSPACE_LIST=$(python3 -c "
+import json
+with open('$WS_FILE') as f:
+    data = json.load(f)
+for w in data.get('workspaces', []):
+    if w.get('status') == 'running' and w['id'] != 'orchestrator':
+        cmux_info = w.get('cmux', {})
+        if cmux_info:
+            ws_id = cmux_info.get('workspace_id', '')
+            surf_id = cmux_info.get('surface_id', '')
+            if ws_id and surf_id:
+                print(f\"{w['id']}|{ws_id}|{surf_id}\")
 " 2>/dev/null)
 
-for ws in $WORKSPACES; do
-    $TMUX_CMD send -t "$ws" "[Broadcast] $MESSAGE" Enter 2>/dev/null && {
-        echo "  已发送到: $ws"
+for entry in $WORKSPACE_LIST; do
+    WS_ID=$(echo "$entry" | cut -d'|' -f1)
+    WORKSPACE=$(echo "$entry" | cut -d'|' -f2)
+    SURFACE=$(echo "$entry" | cut -d'|' -f3)
+
+    if cmux send --workspace "$WORKSPACE" --surface "$SURFACE" "[Broadcast] $MESSAGE" 2>/dev/null; then
+        cmux send-key --workspace "$WORKSPACE" --surface "$SURFACE" enter 2>/dev/null
+        echo "  已发送到: $WS_ID"
         SENT=$((SENT + 1))
-    } || echo "  [失败] $ws"
+    else
+        echo "  [失败] $WS_ID"
+    fi
 done
 
 echo ""
