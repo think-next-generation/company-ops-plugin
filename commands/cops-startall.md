@@ -12,11 +12,11 @@ model: sonnet
 
 ### 1. 读取子系统注册表
 
-读取 `subsystems/_registry.json`，获取所有 status 为 active 的子系统列表。
+读取 `../subsystems/_registry.json`，获取所有 status 为 active 的子系统列表。
 
 ### 2. 读取已有工作区
 
-读取 `.system/workspaces.json`，获取已启动的工作区列表。
+读取 `./.system/workspaces.json`，获取已启动的工作区列表。
 
 ### 3. 逐个判断并启动
 
