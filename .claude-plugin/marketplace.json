@@ -3,7 +3,7 @@
   "description": "Multi-workspace orchestration system for company operations with cmux integration",
   "owner": {
     "name": "Think Next Generation",
-    "email": "think-next@qq.com"
+    "email": "yue.guanyu@hotmail.com"
   },
   "metadata": {
     "description": "Multi-workspace orchestration system for company operations with cmux integration",
@@ -17,7 +17,7 @@
       "version": "0.1.0",
       "author": {
         "name": "Think Next Generation",
-        "email": "think-next@qq.com"
+        "email": "yue.guanyu@hotmail.com"
       },
       "repository": "https://github.com/think-next-generation/company-ops-plugin.git",
       "keywords": ["cmux", "orchestration", "multi-agent", "company-ops"],
